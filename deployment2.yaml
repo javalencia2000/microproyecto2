@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mnist
+spec:
+  selector:
+    matchLabels:
+      run: mnist
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        run: mnist
+    spec:
+      containers:
+      - name: mnist
+        image: pandorasactor/appfinal:v1
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mnist
+  labels:
+    run: mnist
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 3000
+  selector:
+    run: mnist
